@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ThemeToggler } from "./ThemeToggler";
+import Link from "next/link";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -81,25 +82,28 @@ export default function Navber() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link href="#" className="text-primary hover:text-primary/90 flex items-center gap-4">
               <Logo />
-            </a>
-            {/* Navigation menu */}
-            <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      {link.label}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+             <span className="text-black text-3xl hidden sm:block"> Esey Education</span>
+            </Link>
           </div>
+        </div>
+        <div>
+          {/*Center Navigation menu */}
+          <NavigationMenu className="max-md:hidden">
+            <NavigationMenuList className="gap-2">
+              {navigationLinks.map((link, index) => (
+                <NavigationMenuItem key={index}>
+                  <NavigationMenuLink
+                    href={link.href}
+                    className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                  >
+                    {link.label}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
         {/* Right side */}
         <div className="flex items-center gap-4">
