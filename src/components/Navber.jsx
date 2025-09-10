@@ -19,13 +19,14 @@ import Link from "next/link";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Home" },
+  { href: "/", label: "Home" },
   { href: "#", label: "Features" },
   { href: "#", label: "Pricing" },
-  { href: "#", label: "About" },
+  { href: "about", label: "About" },
 ];
 
 export default function Navber() {
+  {}
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
