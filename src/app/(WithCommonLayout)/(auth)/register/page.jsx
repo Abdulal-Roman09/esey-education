@@ -1,3 +1,4 @@
+"use server"
 import RegisterForm from "@/components/ui/auth/RegisterFrom";
 import React from "react";
 
