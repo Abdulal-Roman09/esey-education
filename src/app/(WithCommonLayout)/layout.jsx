@@ -5,7 +5,6 @@ export default function WithCommonLayout({ children }) {
     <div>
       <Navber />
       {children}
-      
     </div>
   );
 }
