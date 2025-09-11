@@ -1,21 +1,26 @@
+// components/ui/auth/RegisterFrom.jsx
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { registerUser } from "@/app/actions/auth/registerUser"; // server action
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import Social from "./Social";
+import Social from "@/components/ui/auth/Social";
 
 export default function RegisterForm() {
+  const [message, setMessage] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Minimal Register Data:", data);
+  const onSubmit = async (data) => {
+    const res = await registerUser(data); 
+    setMessage(res.message);
   };
 
   return (
@@ -25,55 +30,48 @@ export default function RegisterForm() {
           Register
         </CardTitle>
       </CardHeader>
-
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Name */}
           <div className="space-y-1">
             <Label htmlFor="name">Full Name</Label>
             <Input
               id="name"
               placeholder="John Doe"
-              {...register("name", { required: "Full name is required" })}
+              {...register("name", { required: true })}
             />
             {errors.name && (
-              <p className="text-sm text-red-500">{errors.name.message}</p>
+              <p className="text-sm text-red-500">Full name is required</p>
             )}
           </div>
-
-          {/* Email */}
           <div className="space-y-1">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="you@example.com"
-              {...register("email", { required: "Email is required" })}
+              {...register("email", { required: true })}
             />
             {errors.email && (
-              <p className="text-sm text-red-500">{errors.email.message}</p>
+              <p className="text-sm text-red-500">Email is required</p>
             )}
           </div>
-
-          {/* Password */}
           <div className="space-y-1">
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               type="password"
               placeholder="••••••••"
-              {...register("password", { required: "Password is required" })}
+              {...register("password", { required: true })}
             />
             {errors.password && (
-              <p className="text-sm text-red-500">{errors.password.message}</p>
+              <p className="text-sm text-red-500">Password is required</p>
             )}
           </div>
-
-          {/* Submit */}
           <Button type="submit" className="w-full">
             Register
           </Button>
         </form>
+        {message && <p className="mt-2 text-center">{message}</p>}
       </CardContent>
       <Social />
     </Card>

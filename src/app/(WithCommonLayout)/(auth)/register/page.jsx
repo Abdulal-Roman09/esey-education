@@ -1,13 +1,10 @@
-"use server"
-import RegisterForm from "@/components/ui/auth/RegisterFrom";
 import React from "react";
+import RegisterForm from "./components/RegisterFrom";
 
 const RegisterPage = () => {
-  return (
-    <div className=" flex items-center justify-center  p-6">
-      <RegisterForm />
-    </div>
-  );
+  return <div>
+    <RegisterForm/>
+  </div>;
 };
 
 export default RegisterPage;
