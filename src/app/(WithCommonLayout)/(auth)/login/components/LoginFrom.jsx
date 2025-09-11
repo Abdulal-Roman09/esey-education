@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Card,
   CardContent,
@@ -11,20 +11,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Github } from "lucide-react";
-import { FaGoogle } from "react-icons/fa";
-import Social from "./Social";
+import { signIn } from "next-auth/react";
+import Social from "@/components/ui/auth/Social";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const onSubmit = async (data) => {
+    console.log("Login Data:", data);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Data:", form);
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+
+    if (result?.ok) {
+      router.push("/");
+    } else {
+      console.error(result?.error);
+    }
   };
 
   return (
@@ -35,34 +47,32 @@ export default function LoginForm() {
         </CardTitle>
       </CardHeader>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <CardContent className="space-y-5">
-          {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
             <Input
               id="email"
-              name="email"
               type="email"
-              value={form.email}
-              onChange={handleChange}
               placeholder="you@example.com"
-              required
+              {...register("email", { required: "Email is required" })}
             />
+            {errors.email && (
+              <p className="text-sm text-red-500">{errors.email.message}</p>
+            )}
           </div>
 
-          {/* Password */}
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
-              name="password"
               type="password"
-              value={form.password}
-              onChange={handleChange}
               placeholder="••••••••"
-              required
+              {...register("password", { required: "Password is required" })}
             />
+            {errors.password && (
+              <p className="text-sm text-red-500">{errors.password.message}</p>
+            )}
             <div>
               <p className="text-sm text-gray-500 text-center">
                 Don’t have an account?{" "}
@@ -78,14 +88,13 @@ export default function LoginForm() {
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4">
-          {/* Primary login button */}
           <Button type="submit" variant="default" className="w-full">
             Sign In
           </Button>
-
         </CardFooter>
       </form>
-      <Social/>
+
+      <Social />
     </Card>
   );
 }
